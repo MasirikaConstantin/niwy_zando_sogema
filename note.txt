@@ -1,0 +1,43 @@
+#2FB7C3
+
+#1D6FB8
+
+#37A9E1
+
+---------------------------
+Serveur Mysql : 185.98.131.176 (à la place de localhost quand vous installez un CMS)
+Nom de la base Mysql : smart2400412
+Identifiant / login : smart2400412
+Mot de passe : fbtmdckyub
+Cliquez sur ce lien pour y accéder : https://mysql22.lwspanel.com/phpmyadmin
+
+https://themekita.com/atlantis-bootstrap-dashboard.html
+
+{
+    "agent_id": "1",
+    "nom": "Dongo",
+    "postnom": "Poso",
+    "prenom": "Jeanno",
+    "sexe": "M",
+    "lieu_naissance": "Kinshasa",
+    "date_naissance": "2024-06-01",
+    "residence": "3, oshue",
+    "telephone": "243898936133",
+    "nationalite": "République démocratique du Congo",
+    "etat_civil": "Célibataire",
+    "commune": "Kalamu",
+    "type_pavillon_id": "1",
+    "pavillon_id[]": "1",
+    "statut": "nouveau",
+    "maison_article_id[]": "3,2",
+    "table_article_id[]": null,
+    "autre_article_id[]": null,
+    "nom_chef_pavillon": "Non Applicable"
+}
+
+npm install laravel-mix --save-dev
+npm install webpack webpack-cli --save-dev
+
+"infobip/infobip-api-php-client": "5.0.0",
+
+"infobip/infobip-api-php-client": "^4.0",
