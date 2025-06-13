@@ -85,10 +85,14 @@ Créer les Empreintes
                                 </div>
                             </div>
                         </div>
-
+<style>
+    button {
+        margin-right: 5px;
+    }
+</style>
                         <!-- Action Buttons -->
-                        <div class="d-flex justify-content-center gap-3">
-                            <button id="start-btn" class="btn btn-primary">
+                        <div class="d-flex justify-content-center gap-6 mr-2">
+                            <button id="start-btn" class="btn btn-primary ">
                                 <i class="fas fa-fingerprint me-2"></i> Démarrer la capture
                             </button>
                             <button id="save-btn" class="btn btn-success" disabled>
@@ -97,13 +101,17 @@ Créer les Empreintes
                             <button id="reset-btn" class="btn btn-warning">
                                 <i class="fas fa-redo me-2"></i> Réinitialiser
                             </button>
+
+                            <a href="{{ route('dossier.create',["vendeur"=>$vendeur->id]) }}" id="" class="btn btn-success">
+                                <i class="fas fa-redo me-2"></i> Réinitialiser
+                            </a>
                         </div>
 
                         <!-- Progress -->
                         <div class="mt-4">
                             <h6>Progression</h6>
                             <div class="progress">
-                                <div id="global-progress" class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
+                                <div id="global-prprogress-textogress" class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
                             </div>
                             <small id="progress-text" class="text-muted">0/10 doigts enregistrés</small>
                         </div>

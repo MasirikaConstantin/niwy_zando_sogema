@@ -39,8 +39,14 @@
 
 @section('content')
 <div class="container">
-    <h1 class="mb-4">Liste des Dossiers</h1>
+    <h1 class="mb-2">Liste des Dossiers</h1>
+    <div class="text-center">
+        <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#exampleModalLong">
+            Créer un nouveau dossier
+          </button>
+    </div>
     <div style="overflow-x: auto; max-height: 600px;">
+        
     <table class="table table-bordered ">
         <thead>
             <tr>
@@ -124,9 +130,7 @@
     <div class="mt-3">
           
          <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
-    Créer un nouveau dossier
-  </button>
+
   
   <!-- Modal -->
   
