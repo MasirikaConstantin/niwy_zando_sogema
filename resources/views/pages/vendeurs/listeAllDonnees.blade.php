@@ -40,6 +40,7 @@
                 </button>
                 <div class="dropdown-menu">
                     <a href="{{route('vend.fichePDF', $item->id)}}" class="dropdown-item dropdownActive">Voir la demande</a>
+                    <a href="{{route('vend.show', $item->id)}}" class="dropdown-item dropdownActive">Voir le Vendeur</a>
                     {{-- <a href="#" class="dropdown-item dropdownActive">Voir demande validé</a> --}}
                     {{-- <a href="#" class="dropdown-item dropdownActive">Voir demande payé</a> --}}
                     {{-- <a class="dropdown-item dropdownActive" href="{{route('vend.fichePDF', $item->id)}}">Voir le dossier</a> --}}

@@ -168,8 +168,8 @@ Créer un vendeur
                         <div class="multisteps-form__progress">
                             <button class="multisteps-form__progress-btn js-active" type="button" title="Information personnel">IDENTITE</button>
                             <button class="multisteps-form__progress-btn" type="button" title="Capture photo">CAPTURE PHOTO</button>
-                            <button class="multisteps-form__progress-btn" type="button" title="Capture empreint">CAPTURE EMPREINT</button>
-                            <button class="multisteps-form__progress-btn" type="button" title="Demande de place">DEMANDE</button>
+                            <!--button class="multisteps-form__progress-btn" type="button" title="Capture empreint">CAPTURE EMPREINT</button>
+                            <button class="multisteps-form__progress-btn" type="button" title="Demande de place">DEMANDE</button-->
 
                         </div>
                     </div>
@@ -180,7 +180,7 @@ Créer un vendeur
                     @csrf --}}
                     <div class="row">
                         <div class="col-12 col-lg-12 m-auto">
-                            <form id="formSend" action="{{route('vend.StoreAjax')}}" method="POST" class="multisteps-form__form" enctype="multipart/form-data">
+                            <form id="formSend" action="{{route('vend.store')}}" method="POST" class="multisteps-form__form" enctype="multipart/form-data">
                                 @csrf
 
                                 <!-- steep 1 -->
@@ -465,7 +465,9 @@ Créer un vendeur
                                         <div class="row">
                                             <div class="button-row d-flex mt-4 pb-4 col-12">
                                                 <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Précédant</button>
-                                                <button class="btn btn-primary ml-auto js-btn-next" type="button" title="Next">Suivant</button>
+                                                <!--button id="btnSend" class="btn btn-primary ml-auto js-btn-next" type="button" title="Next">Suivant</button-->
+                                                <button id="btnSend" class="btn btn-success ml-auto" type="submit" title="Send">Enregistrer</button>
+
                                                 {{-- <button id="btnSend" class="btn btn-success ml-auto" type="submit" title="Send">Enregistrer</button> --}}
                                             </div>
                                         </div>
@@ -541,8 +543,8 @@ Créer un vendeur
                                         </div>
                                     </div>
                                 </div>
-
-                                <!--steep 4-->
+                                {{--
+                                <!--steep 4- - >
                                 <div class="multisteps-form__panel shadow p-4M pl-4 pr-4 rounded bg-white">
                                     <h3 class="multisteps-form__title pt-4">OUVRIR UN DOSSIER</h3>
                                     <div class="multisteps-form__content">
@@ -560,18 +562,18 @@ Créer un vendeur
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div> --}}
+                                            </div> --} }
 
                                             <div id="removeRow0" class="row mt-3">
                                                 <div class="col-sm-4">
                                                     {{-- <h4>Secteur d'activité<span class="isRequired">*</span></h4> --}}
-                                                    {{-- multiple="multiple" --}}
+                                                    {{-- multiple="multiple" --} }
                                                     <div class="d-flex flex-row justify-content-between">
                                                         <h4>
                                                             Secteur d'activité<span class="isRequired">*</span>
                                                         </h4>
                                                         {{-- <h4 id="articleQuantite0">                                            
-                                                        </h4>   --}}
+                                                        </h4>   --} }
                                                         <input type="hidden" name="inputarticleQuantite0" id="inputarticleQuantite0" value="0" />                                      
                                                     </div>
                                                     <select name="article0" id="articleId0" onchange="getEmplacementByIdArticle('0')" class="form-control selected2">
@@ -579,7 +581,7 @@ Créer un vendeur
                                                     </select>
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    {{-- <h4>Place <span class="isRequired">*</span></h4> --}}
+                                                    {{-- <h4>Place <span class="isRequired">*</span></h4> --} }
                                                     <div class="d-flex flex-row justify-content-between">
                                                         <h4>
                                                             Place <span class="isRequired">*</span>
@@ -597,7 +599,7 @@ Créer un vendeur
                                                 </div>
                                                 <div class="col-sm-2">
                                                     <h4>Quantité
-                                                        {{-- <span id="quantiteDispo0" style="background-color: #ffffff; color: #1D6FB8; font-weight: bold;"></span> --}}
+                                                        {{-- <span id="quantiteDispo0" style="background-color: #ffffff; color: #1D6FB8; font-weight: bold;"></span> --} }
                                                     </h4>
                                                     <input type="number" name="quantite0" id="quantite0" onchange="getQuantitePlace('0');" disabled onkeyup="getQuantitePlace('0');" min="1" max="" value="0" class="form-control" />
                                                     <h6 id="quantiteStock0" style="background-color: #ffffff; color: #1D6FB8; font-weight: bold; display: none;">Stock dispo <span id="quantiteDispo0"></span></h6>
@@ -622,14 +624,14 @@ Créer un vendeur
                                         <div class="row pb-4">
                                             <div class="button-row d-flex mt-4 col-12">
                                                 <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Précédant</button>
-                                                {{-- <button class="btn btn-primary ml-auto js-btn-next" type="button" title="Next">Suivant</button> --}}
-                                                <button id="btnSend" class="btn btn-success ml-auto" type="submit" title="Send">Enregistrer</button>
+                                                {{-- <button class="btn btn-primary ml-auto js-btn-next" type="button" title="Next">Suivant</button> --} }
+                                                <!--button id="btnSend" class="btn btn-success ml-auto" type="submit" title="Send">Enregistrer</button-->
                                             </div>
                                         </div>
                                        
                                     </div>
-                                </div>
-
+                                </div> 
+                                --}}
                             </form>
                         </div>
                     </div>
@@ -753,7 +755,7 @@ Créer un vendeur
                 }   
                 //console.log(produits)       
             }).catch(function(error) {
-                alert(error);
+                //alert(error);
                 //console.log(error);
             });
         };
@@ -786,7 +788,7 @@ Créer un vendeur
                 document.getElementById('printPrix'+idPlace).innerHTML = (prixPlace * quantite) +" $";  
                 //console.log(countEmplacementByPlace);                
             }).catch(function(error) {
-                alert(error);
+                //alert(error);
                 //console.log(error);
             });
         }
@@ -852,7 +854,7 @@ Créer un vendeur
 
                 document.getElementById('placeLoaderImg'+idSecteurActivite).style.display = "none";  
             }).catch(function(error) {
-                alert(error);
+                //alert(error);
                 console.log(error);
             });
         }
@@ -902,12 +904,19 @@ Créer un vendeur
                         title: "Enregistrement",
                         text: reponse.message,
                         icon: 'success',
-                        confirmButtonText: `Ok &nbsp;<i class="fa fa-arrow-right"></i>`,
+                        confirmButtonText: `Ajouter les empreintes <i class="fa fa-fingerprint ml-2"></i>`,
+                        showCancelButton: true,
+                        cancelButtonText: 'Fermer',
+                        focusConfirm: false,
+                        reverseButtons: true
                     })
                     .then((result) => {
                         if (result.isConfirmed) {
-                            //reponse.myData
-                            //window.location.href = "{{route('vend.create')}}"; //reponse.myUrl;
+                            // Redirection vers la page de création d'empreintes avec l'ID du vendeur
+                            window.location.href = `/vend/create-empreintes/${reponse.myData}`;
+                        } else {
+                            // Optionnel: redirection vers une autre page si l'utilisateur clique sur Fermer
+                            // window.location.href = "/vend";
                         }
                     });
                 }
@@ -931,7 +940,7 @@ Créer un vendeur
                 }
                 console.log(reponse)         
             }).catch(function(error) {
-                alert(error);
+                //alert(error);
                 console.log(error);
             });
         });

@@ -19,7 +19,13 @@ class Vendeur extends Model
 
     protected $guarded = [];
     protected $table = "vendeurs";
-
+    protected $fillable = [
+        'nom', 'postnom', 'prenom', 'sexe', 'lieu_naissance', 'date_naissance', 
+        'residence', 'telephone', 'nationalite', 'etat_civil', 'commune', 'photo', 
+        'email', 'numero_patente', 'numCompteBancaire', 'rccm', 'rccm_patente', 
+        'piece_identite', 'piece_identite_date_expiration', 'numero_national', 
+        'personne_de_reference', 'agent_id', 'ancien_nouveau'
+    ];
     public function paiement(){
         return $this->hasOne(Paiement::class);
     }
@@ -64,7 +70,40 @@ class Vendeur extends Model
         return $this->hasMany(VendeurDemande::class, 'vendeur_id', 'id');
     }
 
+    public function dossiers(){
+        return $this->hasMany(Dossier::class, 'vendeur_id', 'id');
+
+    }
+
+    public function empreint(){
+        return $this->hasOne(Empreint::class);
+
+    }
     public function nomComplet(){
         return $this->nom .' '. $this->postnom .' '. $this->prenom;
     }
+
+
+
+     // Dans votre modèle Vendeur.php
+protected static function boot()
+{
+    parent::boot();
+
+    static::creating(function ($model) {
+        $model->code_unique = self::generateUniqueCode();
+    });
+}
+
+public static function generateUniqueCode()
+{
+    $prefix = 'KN/ZD/'.date('Y').'/';
+    $last = self::where('code_unique', 'like', $prefix.'%')
+               ->orderBy('code_unique', 'DESC')
+               ->first();
+    
+    $max = $last ? (int) substr($last->code_unique, strlen($prefix)) + 1 : 1;
+    
+    return $prefix . str_pad($max, 6, "0", STR_PAD_LEFT);
+}
 }

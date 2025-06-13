@@ -228,27 +228,7 @@
 													</tr>
 												</thead>
 												<tbody>
-													@forelse ($vendeur->vendeurDemande as $dm)
-														{{-- @if($dm->decision == '1') --}}
-														<tr class="{{$dm->decision == '1' ? "bg-primary text-white" : ''}}">
-															<td class="">
-																<span>
-																	{{$dm->article->nom}}
-																</span>
-																<h6>
-																	({{$dm->prix}}$ <span>*</span> <span>{{$dm->quatite}}</span> = {{$dm->prix * $dm->quatite}}<span>$</span>)
-																</h6>
-															</td>
-															<td class="text-center">{{$dm->place->nom}} @if(!empty($dm->place->type_place_id)) {{$dm->place->typePlace->nom}} {{$dm->place->typePlace->dimension}}  @endif </td>
-															<td class="text-center">@if(!empty($dm->pavillon_id)){{$dm->pavillon->numero}} / Niveau {{$dm->pavillon->niveau}} @endif</td>
-															<td class="text-right">@if(!empty($dm->emplacement_id)){{$dm->emplacement->numero}} @endif</td>
-														</tr>
-														{{-- @endif --}}
-													@empty
-														<tr>
-															<td colspan="4" class="text-center text-danger fw-bold">Pas de données</td>															
-														</tr>
-													@endforelse
+													
 												</tbody>
 											</table>
 										</div>

@@ -58,7 +58,7 @@ Détails du Dossier #{{ $dossier->id }}
                 </div>
 
                 <div class="col-md-4">
-                    <h5>Profil</h5>
+                    <h5>Profil </h5>
                     <img src="{{ $dossier->vendeur->imageUrl() }}" alt="..." class="img-thumbnail overflow-hidden" width="150" height="150">
                 </div>
             </div>

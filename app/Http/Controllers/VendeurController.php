@@ -23,6 +23,7 @@ use Infobip\Model\SmsDestination;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Treatement;
+use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Support\Facades\Auth;
 use Infobip\Model\SmsTextualMessage;
@@ -79,7 +80,7 @@ class VendeurController extends Controller
        // DB::beginTransaction();
         try {
             $vend = new Vendeur();
-            $vend->code_unique = Profondeur::codeUnique($vend, 'code_unique', 6, 'KN/ZD/'.date('Y').'/');
+            //$vend->code_unique = Profondeur::codeUnique($vend, 'code_unique', 6, 'KN/ZD/'.date('Y').'/');
             $vend->nom = $request->nom;
             $vend->postnom = $request->postnom;
             $vend->prenom = $request->prenom;
@@ -146,7 +147,7 @@ class VendeurController extends Controller
         //DB::beginTransaction();
         try {
             $vend = new Vendeur();
-            $vend->code_unique = Profondeur::codeUnique($vend, 'code_unique', 6, 'KN/ZD/'.date('Y').'/');
+            //$vend->code_unique = Profondeur::codeUnique($vend, 'code_unique', 6, 'KN/ZD/'.date('Y').'/');
             $vend->nom = $request->nom;
             $vend->postnom = $request->postnom;
             $vend->prenom = $request->prenom;
@@ -965,25 +966,6 @@ class VendeurController extends Controller
 
     public function delaiPaiementDepasse()
     {
-        // $year = 2024;
-        // $month = 10;
-
-        // Carbon::setLocale('fr');
-        // setlocale(LC_TIME, 'fr_FR.UTF-8');
-
-        // $startOfMonth = Carbon::createFromDate($year, $month, 1);
-        // $endOfMonth = $startOfMonth->copy()->endOfMonth();
-
-        // $days = [];
-
-        // for ($date = $startOfMonth; $date->lte($endOfMonth); $date->addDay()){
-        //     $days[] = [
-        //         'date' => $date->toDateString(),
-        //         'day_of_week' => $date->format('l')
-        //     ];
-        // }
-
-        // return $days;
 
         $date = Carbon::now()->subDays(8);
         $vendeurs = DB::table('vendeurs')
@@ -999,20 +981,6 @@ class VendeurController extends Controller
                     ->orderBy('vendeurs.id', 'asc')
                     ->get();
 
-        // $vendeurs = DB::table('vendeur_demandes')
-        //             ->join('vendeurs', 'vendeurs.id', '=', 'vendeur_demandes.vendeur_id')
-        //             ->selectRaw(' 
-        //                 vendeurs.id as vendeurId,
-        //                 vendeurs.datecreation as vendeurDatecreation,                      
-        //                 vendeur_demandes.emplacement_id as demandeEmplacement_id,                              
-        //                 vendeur_demandes.id as demandeId                               
-        //             ')
-        //             ->whereDate('vendeurs.datecreation', $date)
-        //             //->where('vendeur_demandes.emplacement_id', "<>", null)
-        //             //->groupBy('vendeurs.id')
-        //             ->orderBy('vendeurs.id', 'asc')
-        //             ->get();
-        
         $vendeurDemandes = array(); //GROUP_CONCAT(vendeur_demandes.emplacement_id) as demandeEmplacement_id    
         foreach($vendeurs as $vd){
             $vendeurDemandes[] = $vd->demandeEmplacement_id;
@@ -1024,4 +992,98 @@ class VendeurController extends Controller
         return $vendeurs;
     }
 
+    public function createEmpreintes($id)
+    {
+        $vendeur = Vendeur::findOrFail($id);
+        return view('pages.empreintes.empreintes-create', compact('vendeur'));
+    }
+
+    
+    public function show($id)
+{
+    $vendeur = Vendeur::with(['dossiers', 'empreint'])->findOrFail($id);
+    return view('pages.vendeurs.show', compact('vendeur'));
+}
+
+     public function editVendeur($id)
+    {
+        $vendeur = Vendeur::findOrFail($id);
+        return view('pages.vendeurs.edit_vendeur', compact('vendeur'));
+    }
+     public function updateVendeur(Request $request, $id)
+    {
+        $vendeur = Vendeur::findOrFail($id);
+        try {
+        $validatedData = $request->validate([
+            'nom' => 'required|string|max:50',
+            'postnom' => 'nullable|string|max:50',
+            'prenom' => 'required|string|max:50',
+            'sexe' => 'required|string|in:M,F',
+            'lieu_naissance' => 'required|string|max:100',
+            'date_naissance' => 'nullable|date',
+            'residence' => 'required|string',
+            'telephone' => 'required|string|max:20',
+            'nationalite' => 'nullable|string|max:50',
+            'etat_civil' => 'nullable|string|max:50',
+            'commune' => 'nullable|string|max:100',
+            'email' => 'nullable|email|max:100',
+            'rccm_patente' => 'required|in:rccm,patente',
+            'rccm' => 'required|string|max:150',
+            
+            'piece_identite' => 'nullable|string|max:60',
+            'piece_identite_date_expiration' => 'nullable|date',
+            'numero_national' => 'nullable|string|max:18',
+            'statut' => 'required|boolean',
+            'getPhotoMyPc' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Gestion de la photo
+          // Gestion de la photo - Enregistrement direct dans public/uploaded_files/
+        if ($request->hasFile('getPhotoMyPc')) {
+            // Supprimer l'ancienne photo si elle existe
+            if ($vendeur->photo && file_exists(public_path('uploaded_files/' . $vendeur->photo))) {
+                unlink(public_path('uploaded_files/' . $vendeur->photo));
+            }
+
+            // Enregistrer la nouvelle photo
+            $file = $request->file('getPhotoMyPc');
+            $filename = 'vendeur_'.$vendeur->id.'_'.time().'.'.$file->getClientOriginalExtension();
+            
+            // Déplacer le fichier vers public/uploaded_files/
+            $file->move(public_path('uploaded_files'), $filename);
+            $validatedData['photo'] = $filename;
+            
+        } elseif ($request->has('image_data')) {
+            // Gestion de la photo capturée par webcam
+            $imageData = $request->image_data;
+            $imageContent = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imageData));
+            
+            $filename = 'vendeur_'.$vendeur->id.'_'.time().'.jpg';
+            $path = public_path('uploaded_files/' . $filename);
+            
+            file_put_contents($path, $imageContent);
+            $validatedData['photo'] = $filename;
+        }
+
+
+        // Gestion RCCM/Patente
+        if ($validatedData['rccm_patente'] == 'rccm') {
+            $validatedData['rccm'] = $validatedData['rccm'];
+            $validatedData['numero_patente'] = null;
+        } else {
+            $validatedData['numero_patente'] = $validatedData['rccm']; // On utilise la valeur du champ "rccm"
+            $validatedData['rccm'] = null;
+        }
+        unset($validatedData['rccm']); // Supprimer le champ temporaire
+
+        $validatedData['ancien_nouveau'] = $validatedData['statut'];
+        unset($validatedData['statut']);
+
+        $vendeur->update($validatedData);
+} catch (\Illuminate\Validation\ValidationException $e) {
+    dd($e->errors()); // Affiche les erreurs de validation
+}
+        return redirect()->route('vend.show', $vendeur->id)
+                         ->with('success', 'Vendeur mis à jour avec succès');
+    }
 }

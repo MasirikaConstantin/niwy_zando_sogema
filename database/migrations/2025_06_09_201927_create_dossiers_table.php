@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('vendeur_id')->constrained('vendeurs')->onDelete('cascade')->onUpdate('cascade');
             
-            // Données déplacées de vendeurs
             $table->string('etat', 50)->default('attente');
             $table->dateTime('date_traitement')->nullable();
             $table->dateTime('date_paiment')->nullable();
@@ -28,9 +27,7 @@ return new class extends Migration
             $table->string('nom_chef_pavillon')->nullable();
             $table->string('nbr_table', 20)->nullable();
             $table->string('statut', 50)->nullable();
-            //$table->boolean('ancien_nouveau')->default(true); // true = ancien
             $table->string('agentBanque')->default('0');
-            
             $table->timestamps();
         });
     }

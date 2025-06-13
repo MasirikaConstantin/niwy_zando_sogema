@@ -49,7 +49,7 @@ class ArticleController extends Controller
             $article->nom = $request->nom;
             //$article->categorie_id = $request->categorieId;
             //$article->user_id = Auth::user()->id;
-            $article->save_by = Auth::user()->id;
+            $article->user_id = Auth::user()->id;
             $article->save();
             if ($article) {
                 toastr()->success("Article enregistré avec success!");
@@ -78,7 +78,7 @@ class ArticleController extends Controller
             $article->nom = $request->nom;
             //$article->categorie_id = $request->categorieId;
             //$article->user_id = Auth::user()->id;
-            $article->save_by = Auth::user()->id;
+            $article->user_id = Auth::user()->id;
             $article->save();
             if ($article) {
                 return back()->with('success', "Article modifié avec succès " .$request->nom );

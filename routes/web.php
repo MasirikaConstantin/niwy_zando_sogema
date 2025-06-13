@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VendeurController;
 use App\Http\Controllers\PavillonController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EmpreintController;
 use App\Http\Controllers\DossierController;
 use App\Http\Controllers\TypePlaceController;
 use App\Http\Controllers\EmplacementController;
@@ -111,6 +112,7 @@ Route::group(['middleware' => ['auth','checkStatutUserActivate']], function(){
         Route::get('/select-choix-save', [VendeurController::class,'selectChoixSave'])->name('selectChoixSave');
         //Route::get('/pre-enregistrement', [VendeurController::class,'create'])->name('vend.create');
         Route::get('/create', [VendeurController::class,'create'])->name('vend.create');
+        Route::get('/vend/{id}', [VendeurController::class,'show'])->name('vend.show');
         Route::post('/store', [VendeurController::class,'store'])->name('vend.store');
         Route::post('/storeAjax', [VendeurController::class,'storeAjax'])->name('vend.StoreAjax');
         Route::get('/listeAll', [VendeurController::class,'index'])->name('vend.index');
@@ -206,6 +208,19 @@ Route::group(['middleware' => ['auth','checkStatutUserActivate']], function(){
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::resource('empreintes', EmpreintController::class);
+// Dans routes/web.php
+Route::get('/vend/create-empreintes/{id}', [VendeurController::class, 'createEmpreintes'])
+     ->name('vend.createEmpreintes');
+Route::get('/vend/modifier/{id}', [VendeurController::class, 'editVendeur'])
+     ->name('vend.editvendeur');
+Route::put('/vend/modifier/{id}', [VendeurController::class, 'updateVendeur'])
+     ->name('vend.updateVendeur');
+
+     // Routes pour les dossiers
+Route::get('/dossiers/{dossier}', [DossierController::class, 'show'])->name('dossiers.show');
+Route::get('/vendeurs/{vendeur}/dossiers', [VendeurController::class, 'dossiers'])->name('vendeurs.dossiers');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
