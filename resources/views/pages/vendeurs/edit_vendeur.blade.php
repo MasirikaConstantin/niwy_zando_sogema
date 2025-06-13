@@ -252,12 +252,12 @@ Détails vendeur
                     </button>
                 </div>
                 <div class="modal-body text-center">
-                    <div id="my_camera" style="width:100%; margin: 0 auto;"></div>
-                    <input type="hidden" name="image_data" id="image_data">
+                    <video id="video" width="100%" autoplay playsinline></video>
+                    <canvas id="canvas" style="display:none;"></canvas>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                    <button type="button" class="btn btn-primary" onclick="take_snapshot()">
+                    <button type="button" class="btn btn-primary" id="captureBtn">
                         <i class="fas fa-camera"></i> Capturer
                     </button>
                 </div>
@@ -266,43 +266,96 @@ Détails vendeur
     </div>
 
 <!-- WebcamJS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
 <script>
-// Initialize camera
-Webcam.set({
-    width: 320,
-    height: 240,
-    image_format: 'jpeg',
-    jpeg_quality: 90
-});
+document.addEventListener('DOMContentLoaded', function() {
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    const captureBtn = document.getElementById('captureBtn');
+    const photoInput = document.getElementById('getPhotoMyPc'); // Input file pour la photo
+    let stream = null;
 
-$('#cameraModal').on('shown.bs.modal', function () {
-    Webcam.attach('#my_camera');
-});
+    // Démarrer la caméra quand le modal s'ouvre
+    $('#cameraModal').on('shown.bs.modal', async function() {
+        try {
+            // Arrêter le flux précédent s'il existe
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
 
-$('#cameraModal').on('hidden.bs.modal', function () {
-    Webcam.reset();
-});
-
-function take_snapshot() {
-    Webcam.snap(function(data_uri) {
-        document.getElementById('image_data').value = data_uri;
-        $('#cameraModal').modal('hide');
+            // Obtenir le flux vidéo
+            stream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 },
+                    facingMode: 'user'
+                },
+                audio: false
+            });
+            
+            video.srcObject = stream;
+            video.play();
+            
+            // Ajuster la taille du canvas à la vidéo
+            video.addEventListener('loadedmetadata', function() {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+            });
+        } catch (err) {
+            console.error("Erreur de caméra:", err);
+            alert("Impossible d'accéder à la caméra: " + err.message);
+            $('#cameraModal').modal('hide');
+        }
     });
-}
 
-// Update file input label
-document.querySelector('.custom-file-input').addEventListener('change', function(e) {
-    var fileName = document.getElementById("getPhotoMyPc").files[0].name;
-    var nextSibling = e.target.nextElementSibling;
-    nextSibling.innerText = fileName;
-});
+    // Capturer la photo
+    captureBtn.addEventListener('click', function() {
+        if (!stream) return;
+        
+        // Dessiner l'image du vidéo sur le canvas
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        // Convertir en blob et l'assigner à l'input file
+        canvas.toBlob(function(blob) {
+            // Créer un nouveau fichier avec le blob
+            const file = new File([blob], 'profile-photo.jpg', { type: 'image/jpeg' });
+            
+            // Créer un DataTransfer pour assigner le fichier à l'input
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            photoInput.files = dataTransfer.files;
+            
+            // Mettre à jour le label
+            const label = photoInput.nextElementSibling;
+            label.innerText = 'Photo capturée';
+            
+            // Fermer le modal
+            $('#cameraModal').modal('hide');
+        }, 'image/jpeg', 0.9);
+    });
 
-// Afficher/cacher les champs RCCM/Patente dynamiquement
-document.querySelectorAll('input[name="rccm_patente"]').forEach(radio => {
-    radio.addEventListener('change', function() {
-        document.getElementById('rccm-field').style.display = this.value === 'rccm' ? 'block' : 'none';
-        document.getElementById('patente-field').style.display = this.value === 'patente' ? 'block' : 'none';
+    // Nettoyer quand le modal se ferme
+    $('#cameraModal').on('hidden.bs.modal', function() {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+        }
+        video.srcObject = null;
+    });
+
+    // Update file input label
+    document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+        var fileName = document.getElementById("getPhotoMyPc").files[0].name;
+        var nextSibling = e.target.nextElementSibling;
+        nextSibling.innerText = fileName;
+    });
+
+    // Afficher/cacher les champs RCCM/Patente dynamiquement
+    document.querySelectorAll('input[name="rccm_patente"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            document.getElementById('rccm-field').style.display = this.value === 'rccm' ? 'block' : 'none';
+            document.getElementById('patente-field').style.display = this.value === 'patente' ? 'block' : 'none';
+        });
     });
 });
 </script>
