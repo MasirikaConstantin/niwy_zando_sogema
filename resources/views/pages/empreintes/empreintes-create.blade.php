@@ -46,21 +46,21 @@ Créer les Empreintes
                             <div class="col-md-6">
                                 <h6 class="mb-3">Main droite</h6>
                                 <div class="d-flex flex-wrap gap-2">
-                                    <button class="btn btn-outline-primary finger-btn" data-finger="doigt_droite1">Pouce</button>
-                                    <button class="btn btn-outline-primary finger-btn" data-finger="doigt_droite2">Index</button>
-                                    <button class="btn btn-outline-primary finger-btn" data-finger="doigt_droite3">Majeur</button>
-                                    <button class="btn btn-outline-primary finger-btn" data-finger="doigt_droite4">Annulaire</button>
-                                    <button class="btn btn-outline-primary finger-btn" data-finger="doigt_droite5">Auriculaire</button>
+                                    <button class="btn btn-outline-primary finger-btn btn-sm" data-finger="doigt_droite1">Pouce</button>
+                                    <button class="btn btn-outline-primary finger-btn btn-sm" data-finger="doigt_droite2">Index</button>
+                                    <button class="btn btn-outline-primary finger-btn btn-sm" data-finger="doigt_droite3">Majeur</button>
+                                    <button class="btn btn-outline-primary finger-btn btn-sm" data-finger="doigt_droite4">Annulaire</button>
+                                    <button class="btn btn-outline-primary finger-btn btn-sm" data-finger="doigt_droite5">Auriculaire</button>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <h6 class="mb-3">Main gauche</h6>
                                 <div class="d-flex flex-wrap gap-2">
-                                    <button class="btn btn-outline-primary finger-btn" data-finger="doigt_gauche1">Pouce</button>
-                                    <button class="btn btn-outline-primary finger-btn" data-finger="doigt_gauche2">Index</button>
-                                    <button class="btn btn-outline-primary finger-btn" data-finger="doigt_gauche3">Majeur</button>
-                                    <button class="btn btn-outline-primary finger-btn" data-finger="doigt_gauche4">Annulaire</button>
-                                    <button class="btn btn-outline-primary finger-btn" data-finger="doigt_gauche5">Auriculaire</button>
+                                    <button class="btn btn-outline-primary finger-btn btn-sm" data-finger="doigt_gauche1">Pouce</button>
+                                    <button class="btn btn-outline-primary finger-btn btn-sm" data-finger="doigt_gauche2">Index</button>
+                                    <button class="btn btn-outline-primary finger-btn btn-sm" data-finger="doigt_gauche3">Majeur</button>
+                                    <button class="btn btn-outline-primary finger-btn btn-sm" data-finger="doigt_gauche4">Annulaire</button>
+                                    <button class="btn btn-outline-primary finger-btn btn-sm" data-finger="doigt_gauche5">Auriculaire</button>
                                 </div>
                             </div>
                         </div>
@@ -103,7 +103,7 @@ Créer les Empreintes
                             </button>
 
                             <a href="{{ route('dossier.create',["vendeur"=>$vendeur->id]) }}" id="" class="btn btn-success">
-                                <i class="fas fa-redo me-2"></i> Réinitialiser
+                                <i class="fas fa-folder-open me-2"></i> Ajouter un dossier
                             </a>
                         </div>
 
