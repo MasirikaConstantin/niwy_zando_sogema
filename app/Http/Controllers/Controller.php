@@ -458,11 +458,11 @@ class Controller extends BaseController
     // $autre_nbr = Place::find(4)->nombre_disponible;
 
     public function getPlaceNumber(){
-        $magasin_nbr = Place::find(1)->nbr_restant;
+        /*$magasin_nbr = Place::find(1)->nbr_restant;
         $etalage_nbr = Place::find(2)->nbr_restant;
         $kiosque_nbr = Place::find(3)->nbr_restant;
         $entrepot_nbr = Place::find(4)->nbr_restant;
         $chambreFroide_nbr = Place::find(5)->nbr_restant;
         return ['magasin' => $magasin_nbr, 'etalage' => $etalage_nbr, 'kiosque' => $kiosque_nbr, 'entrepot' => $entrepot_nbr, 'chambreFroide' => $chambreFroide_nbr];
-    }
+    */}
 }

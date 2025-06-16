@@ -111,7 +111,7 @@ Créer les Empreintes
                         <div class="mt-4">
                             <h6>Progression</h6>
                             <div class="progress">
-                                <div id="global-prprogress-textogress" class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
+                                <div id="global-progress" class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
                             </div>
                             <small id="progress-text" class="text-muted">0/10 doigts enregistrés</small>
                         </div>
