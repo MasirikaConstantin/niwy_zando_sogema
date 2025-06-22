@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('dossiers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('vendeur_id')->constrained('vendeurs')->onDelete('cascade')->onUpdate('cascade');
-            
+            $table->integer('numero_dossier')->nullable()->index();
             $table->string('etat', 50)->default('attente');
             $table->dateTime('date_traitement')->nullable();
             $table->dateTime('date_paiment')->nullable();
@@ -22,9 +22,9 @@ return new class extends Migration
             $table->boolean('decision_dg')->default(false);
             $table->foreignId('userTraiter_id')->nullable()->constrained('users')->onDelete('restrict')->onUpdate('cascade');
             $table->foreignId('agent_id')->nullable()->constrained('users')->onDelete('restrict')->onUpdate('cascade');
-            $table->foreignId('type_pavilon_id')->nullable()->constrained('type_pavilons')->onDelete('restrict')->onUpdate('cascade');
+            //$table->foreignId('type_pavilon_id')->nullable()->constrained('type_pavilons')->onDelete('restrict')->onUpdate('cascade');
             $table->string('datecreation')->nullable();
-            $table->string('nom_chef_pavillon')->nullable();
+            //$table->string('nom_chef_pavillon')->nullable();
             $table->string('nbr_table', 20)->nullable();
             $table->string('statut', 50)->nullable();
             $table->string('agentBanque')->default('0');

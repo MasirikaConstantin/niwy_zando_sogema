@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('place_id')->nullable()->constrained('places')->onDelete('restrict')->onUpdate('cascade');
             $table->foreignId('emplacement_id')->nullable()->constrained('emplacements')->onDelete('restrict')->onUpdate('cascade');
             
-            $table->double('quantite')->default(0); // Correction orthographe (optionnel)
+            $table->double('quantite')->default(0); 
             $table->double('prix')->default(0);
             $table->double('mois')->default(7);
             $table->double('total')->default(0);
@@ -31,6 +31,7 @@ return new class extends Migration
             $table->dateTime('date_decision_banque')->nullable();
             $table->string('nom_agent_banque', 255)->nullable();
             $table->integer('userValidateur')->default(0);
+            $table->foreignId('vendeur_id')->constrained('vendeurs')->onDelete('cascade')->onUpdate('cascade');// Rélation entre un vendeur est sa demande (à traiter*)
             
             $table->timestamps();
         });
