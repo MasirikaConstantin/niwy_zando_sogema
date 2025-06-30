@@ -64,7 +64,6 @@
                                 <th>{{ __('Noms')}}</th>
                                 <th class="text-center">{{ __('Telephone') }}</th>                                
                                 <th class="text-center">Date enregistrement</th>
-                                <th class="text-center">{{ __('Etat dossier')}}</th>
                                 <th class="text-center">{{ __('Action')}}</th>
                             </tr>
                         </thead>

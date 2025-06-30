@@ -20,14 +20,15 @@ class Controller extends BaseController
     //public $maison_nbr;
     public $messagePermission =  "Vous n'avez pas de permission";
 
-    public function SaveMultipleSelect($request, $vendeurId) {
+    public function SaveMultipleSelect($request, $vendeurId, $dossierID) {
         if(!empty($request['quantite0']) && isset($request['quantite0'])){
             for($i=1; $i <= $request['quantite0']; $i++){
                 $vd = new VendeurDemande();
                 $vd->vendeur_id = $vendeurId;
+                $vd->dossier_id = $dossierID;
                 $vd->article_id = $request['article0'];
                 $vd->place_id = $request['place0'];                
-                $vd->quatite = 1;//$request['quantite0'];
+                $vd->quantite = 1;//$request['quantite0'];
                 //$vd->pavillon_id = $request['pavillon_id0'];
                 //$vd->emplacement_id = $request['emplacement_id'];
                 $vd->prix = $request['placePrixInput0'] ?? 0;                
@@ -42,9 +43,10 @@ class Controller extends BaseController
             for($i=1; $i <= $request['quantite1']; $i++){
                 $vd = new VendeurDemande();
                 $vd->vendeur_id = $vendeurId;
+                $vd->dossier_id = $dossierID;
                 $vd->article_id = $request['article1'];
                 $vd->place_id = $request['place1'];                
-                $vd->quatite = 1;//$request['quantite1'];
+                $vd->quantite = 1;//$request['quantite1'];
                 $vd->prix = $request['placePrixInput1'] ?? 0;
                 //$vd->total = ($request['placePrixInput1'] * 1); //$request['totalInput1'] ?? 0;
                 $vd->mois = $request['mois1'] ?? 0;
@@ -57,9 +59,11 @@ class Controller extends BaseController
             for($i=1; $i <= $request['quantite2']; $i++){
                 $vd = new VendeurDemande();
                 $vd->vendeur_id = $vendeurId;
+                $vd->dossier_id = $dossierID;
+
                 $vd->article_id = $request['article2'];
                 $vd->place_id = $request['place2'];                
-                $vd->quatite = 1;//$request['quantite2'];
+                $vd->quantite = 1;//$request['quantite2'];
                 $vd->prix = $request['placePrixInput2'] ?? 0;
                 //$vd->total = ($request['placePrixInput2'] * 1); //$request['totalInput2'] ?? 0;
                 $vd->mois = $request['mois2'] ?? 0;
@@ -71,10 +75,11 @@ class Controller extends BaseController
         if(!empty($request['quantite3']) && isset($request['quantite3'])){
             for($i=1; $i <= $request['quantite3']; $i++){
                 $vd = new VendeurDemande();
+                $vd->dossier_id = $dossierID;
                 $vd->vendeur_id = $vendeurId;
                 $vd->article_id = $request['article3'];
                 $vd->place_id = $request['place3'];                
-                $vd->quatite = 1;//$request['quantite3'];
+                $vd->quantite = 1;//$request['quantite3'];
                 $vd->prix = $request['placePrixInput3'] ?? 0;
                 //$vd->total = ($request['placePrixInput3'] * 1); //$request['totalInput3'] ?? 0;
                 $vd->mois = $request['mois3'] ?? 0;
@@ -88,8 +93,9 @@ class Controller extends BaseController
                 $vd = new VendeurDemande();
                 $vd->vendeur_id = $vendeurId;
                 $vd->article_id = $request['article4'];
+                $vd->dossier_id = $dossierID;
                 $vd->place_id = $request['place4'];                
-                $vd->quatite = 1;//$request['quantite4'];
+                $vd->quantite = 1;//$request['quantite4'];
                 $vd->prix = $request['placePrixInput4'] ?? 0;
                 //$vd->total = ($request['placePrixInput4'] * 1); //$request['totalInput4'] ?? 0;
                 $vd->mois = $request['mois4'] ?? 0;
@@ -103,8 +109,9 @@ class Controller extends BaseController
                 $vd = new VendeurDemande();
                 $vd->vendeur_id = $vendeurId;
                 $vd->article_id = $request['article5'];
+                $vd->dossier_id = $dossierID;
                 $vd->place_id = $request['place5'];                
-                $vd->quatite = 1;//$request['quantite5'];
+                $vd->quantite = 1;//$request['quantite5'];
                 $vd->prix = $request['placePrixInput5'] ?? 0;
                 //$vd->total = ($request['placePrixInput5'] * 1); //$request['totalInput5'] ?? 0;
                 $vd->mois = $request['mois5'] ?? 0;
@@ -118,8 +125,9 @@ class Controller extends BaseController
                 $vd = new VendeurDemande();
                 $vd->vendeur_id = $vendeurId;
                 $vd->article_id = $request['article6'];
+                $vd->dossier_id = $dossierID;
                 $vd->place_id = $request['place6'];                
-                $vd->quatite = 1;//$request['quantite6'];
+                $vd->quantite = 1;//$request['quantite6'];
                 $vd->prix = $request['placePrixInput6'] ?? 0;
                 //$vd->total = ($request['placePrixInput6'] * 1); //$request['totalInput6'] ?? 0;
                 $vd->mois = $request['mois6'] ?? 0;
@@ -133,8 +141,9 @@ class Controller extends BaseController
                 $vd = new VendeurDemande();
                 $vd->vendeur_id = $vendeurId;
                 $vd->article_id = $request['article7'];
+                $vd->dossier_id = $dossierID;
                 $vd->place_id = $request['place7'];                
-                $vd->quatite = 1;//$request['quantite7'];
+                $vd->quantite = 1;//$request['quantite7'];
                 $vd->prix = $request['placePrixInput7'] ?? 0;
                 //$vd->total = ($request['placePrixInput7'] * 1); //$request['totalInput7'] ?? 0;
                 $vd->mois = $request['moi7'] ?? 0;
@@ -147,9 +156,10 @@ class Controller extends BaseController
             for($i=1; $i <= $request['quantite8']; $i++){
                 $vd = new VendeurDemande();
                 $vd->vendeur_id = $vendeurId;
+                $vd->dossier_id = $dossierID;
                 $vd->article_id = $request['article8'];
                 $vd->place_id = $request['place8'];                
-                $vd->quatite = 1;//$request['quantite8'];
+                $vd->quantite = 1;//$request['quantite8'];
                 $vd->prix = $request['placePrixInput8'] ?? 0;
                 //$vd->total = ($request['placePrixInput8'] * 1); //$request['totalInput8'] ?? 0;
                 $vd->mois = $request['mois8'] ?? 0;
@@ -162,9 +172,10 @@ class Controller extends BaseController
             for($i=1; $i <= $request['quantite9']; $i++){
                 $vd = new VendeurDemande();
                 $vd->vendeur_id = $vendeurId;
+                $vd->dossier_id = $dossierID;
                 $vd->article_id = $request['article9'];
                 $vd->place_id = $request['place8'];                
-                $vd->quatite = 1;//$request['quantite9'];
+                $vd->quantite = 1;//$request['quantite9'];
                 $vd->prix = $request['placePrixInput9'] ?? 0;
                 //$vd->total = ($request['placePrixInput9'] * 1); //$request['totalInput9'] ?? 0;
                 $vd->mois = $request['mois9'] ?? 0;
@@ -178,8 +189,9 @@ class Controller extends BaseController
                 $vd = new VendeurDemande();
                 $vd->vendeur_id = $vendeurId;
                 $vd->article_id = $request['article10'];
+                $vd->dossier_id = $dossierID;
                 $vd->place_id = $request['place10'];                
-                $vd->quatite = 1;//$request['quantite10'];
+                $vd->quantite = 1;//$request['quantite10'];
                 $vd->prix = $request['placePrixInput10'] ?? 0;
                 //$vd->total = ($request['placePrixInput10'] * 1); //$request['totalInput10'] ?? 0;
                 $vd->mois = $request['mois10'] ?? 0;
@@ -192,9 +204,10 @@ class Controller extends BaseController
             for($i=1; $i <= $request['quantite11']; $i++){
                 $vd = new VendeurDemande();
                 $vd->vendeur_id = $vendeurId;
+                $vd->dossier_id = $dossierID;
                 $vd->article_id = $request['article11'];
                 $vd->place_id = $request['place11'];                
-                $vd->quatite = 1;//$request['quantite11'];
+                $vd->quantite = 1;//$request['quantite11'];
                 $vd->prix = $request['placePrixInput11'] ?? 0;
                 //$vd->total = ($request['placePrixInput11'] * 1); //$request['totalInput11'] ?? 0;
                 $vd->mois = $request['11'] ?? 0;

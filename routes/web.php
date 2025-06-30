@@ -14,6 +14,7 @@ use App\Http\Controllers\TypePlaceController;
 use App\Http\Controllers\EmplacementController;
 use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\VendeurDemandeController;
+use App\Http\Controllers\VendeurNouveauDossier;
 
 /*
 |--------------------------------------------------------------------------
@@ -227,5 +228,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::post('/store_nouveau_dossier_ajax', [VendeurNouveauDossier::class,'storeAjax'])->name('vend.storeNouveauDossierAjax');
 
 require __DIR__.'/auth.php';

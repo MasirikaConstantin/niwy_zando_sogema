@@ -19,8 +19,6 @@ return new class extends Migration
             $table->double('prix')->default(0); 
             $table->foreignId('type_place_id')->nullable()->constrained('type_places')->onDelete('restrict')->onUpdate('cascade');
             $table->string('orientation')->nullable();
-            // $table->double('nombre_disponible')->default(0);
-            // $table->double('nbr_restant')->default(0);
             $table->integer('save_by')->nullable();
             $table->timestamps();
         });

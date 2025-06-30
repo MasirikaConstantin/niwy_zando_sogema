@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('dossiers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('vendeur_id')->constrained('vendeurs')->onDelete('cascade')->onUpdate('cascade');
-            $table->integer('numero_dossier')->nullable()->index();
+            $table->integer('numdossier')->nullable()->index();
             $table->string('etat', 50)->default('attente');
             $table->dateTime('date_traitement')->nullable();
             $table->dateTime('date_paiment')->nullable();

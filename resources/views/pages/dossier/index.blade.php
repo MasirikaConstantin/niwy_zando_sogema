@@ -129,9 +129,6 @@
     </div>
     <div class="mt-3">
           
-         <!-- Button trigger modal -->
-
-  
   <!-- Modal -->
   
 <!-- Modifiez votre modal comme ceci -->
@@ -172,10 +169,7 @@
                 <button type="button" class="btn btn-primary" onclick="submitForm()">Enregistrer</button>
               </div>
             </div>
-            
-           
-            
-            <!-- Ajoutez ici les autres champs nécessaires -->
+      
           </form>
         </div>
         
@@ -250,11 +244,7 @@
         return;
     }
     
-    // Solution directe (sans utiliser route()):
     window.location.href = `/dossier/create/${id}`;
-    
-    // OU solution utilisant la route nommée (plus propre):
-    // window.location.href = '{{ route("dossier.create", "") }}/' + id;
 }
 </script>
 @endsection

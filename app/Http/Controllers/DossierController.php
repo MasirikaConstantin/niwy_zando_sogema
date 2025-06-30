@@ -27,8 +27,9 @@ class DossierController extends Controller
     {
         $vendeur = Vendeur::findOrFail($vendeur_id);
         $articles = Article::orderBy('nom', 'ASC')->get();
-        
-        return view('pages.dossier.create', compact('vendeur', 'articles'));
+        //return view('pages.dossier.create', compact('vendeur', 'articles'));
+        return view('pages.dossier.createNewDossies', compact('vendeur', 'articles'));
+
     }
 
     public function store(Request $request)
@@ -94,7 +95,7 @@ class DossierController extends Controller
     {
         $dossier = Dossier::with(['vendeur', 'vendeurDemandes'])
                          ->findOrFail($id);
-        $articles = Article::where('statut', 'actif')->get();
+        $articles = Article::all();
         
         return view('pages.dossier.edit', compact('dossier', 'articles'));
     }
