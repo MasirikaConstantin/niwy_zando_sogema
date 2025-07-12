@@ -9,18 +9,17 @@
     <td class="text-center">
         {{ date('d-m-Y', strtotime($item->datecreation)) }}
     </td>
+    {{--  
     <td class="text-center">
-        {{-- request()->segment(3) --}}
         @if($item->etat == "valider")
             <span class="p-1 colorText bg-primary" style="border-radius: 5px; font-weight: bold;"> Validé </span>
         @else
             @if($item->etat == "pre-enregistrement")
-                {{-- background-color: #dc8211; --}}
+                {{-- background-color: #dc8211; -- }}
                 <span class="p-1 colorText bg-danger" style="border-radius: 5px; font-weight: bold;"> Pré-enregistrement </span>
             @endif
 
             @if($item->etat == "attente")
-                {{-- background-color: #dc8211; --}}
                 <span class="p-1 colorText" style="background-color: #dc8211; border-radius: 5px; font-weight: bold;"> Non traité </span>
             @endif
             @if($item->etat == "traiter")
@@ -31,6 +30,7 @@
             @endif
         @endif
     </td>
+    --}}
 
     <td class="text-center">
         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
