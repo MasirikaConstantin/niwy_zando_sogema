@@ -62,4 +62,9 @@ class Dossier extends Model
     {
         return $this->hasMany(VendeurDemande::class, 'dossier_id');
     }
+
+    public function vendeurDemande()
+    {
+        return $this->hasMany(VendeurDemande::class, 'dossier_id');
+    }
 }

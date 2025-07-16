@@ -3,7 +3,6 @@
 @section('title')
 	Formulaire de validation vendeur
 @endsection
-
 @section('styles')
 <style>
     .card .card-header, .card-light .card-header {
@@ -62,15 +61,15 @@
 							<div class="row border mt-4 ml-2 mr-2">
                                 <div class="col-sm-4" style="border-right: 0.5px solid #dee2e6;">
                                     <h4 style="font-weight: bold;">Nom:</h4>
-                                    <h4>{{$vendeur->nom}}</h4>
+                                    <h4>{{$vendeur->vendeur->nom}}</h4>
                                 </div>
                                 <div class="col-sm-4" style="border-right: 0.5px solid #dee2e6;">
                                     <h4 style="font-weight: bold;">Postnom:</h4>
-                                    <h4>{{$vendeur->postnom}}</h4>
+                                    <h4>{{$vendeur->vendeur->postnom}}</h4>
                                 </div>
                                 <div class="col-sm-4">
                                     <h4 style="font-weight: bold;">Prenom:</h4>
-                                    <h4>{{$vendeur->prenom}}</h4>
+                                    <h4>{{$vendeur->vendeur->prenom}}</h4>
                                 </div>
                             </div>
 						</div>

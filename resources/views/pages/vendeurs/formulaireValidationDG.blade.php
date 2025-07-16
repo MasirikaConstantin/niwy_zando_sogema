@@ -1,9 +1,7 @@
 @extends('layout.main')
-
 @section('title')
 	Fiche signalitique de 
 @endsection
-
 @section('styles')
 <style>
 	.fontSizeTitle{
@@ -92,12 +90,12 @@
 									<img src="{{asset('assets/img/logoSogema.png')}}" alt="Logo Sogema" style="height: 50px;" />
 									<div style="width: inherit; margin: auto; justify-content: center;">
 										<!-- <img src="{{asset('assets/img/profilSogema.png')}}" alt="Logo Sogema" style="height: 150px; width: 150px; object-fit: contain;" /> -->
-										@if($vendeur->photo == "" && $vendeur->sexe == 'M')
+										@if($vendeur->vendeur->photo == "" && $vendeur->vendeur->sexe == 'M')
 											<img src="{{asset('assets/img/homme.png')}}" alt="Logo Sogema" style="height: 150px; width: 150px; object-fit: contain;" />
-										@elseif($vendeur->photo == "" && $vendeur->sexe == 'F')
+										@elseif($vendeur->vendeur->photo == "" && $vendeur->vendeur->sexe == 'F')
 											<img src="{{asset('assets/img/femme.png')}}" alt="Logo Sogema" style="height: 150px; width: 150px; object-fit: contain;" />
 										@else
-											<img src="{{asset('uploaded_files/'.$vendeur->photo)}}" alt="Logo Sogema" style="height: 150px; width: 150px; object-fit: contain;" />
+											<img src="{{asset('uploaded_files/'.$vendeur->vendeur->photo)}}" alt="Logo Sogema" style="height: 150px; width: 150px; object-fit: contain;" />
 										@endif
 									</div>
 								</div>
@@ -117,7 +115,7 @@
 									<!-- <img src="{{asset('assets/img/profilSogema.png')}}" alt="Logo Sogema" style="height: 150px; width: 150px; object-fit: contain;" /> -->
 									
 									{{$qrcodeifos}}
-									<p>{{$vendeur->code_unique}}</p>
+									<p>{{$vendeur->vendeur->code_unique}}</p>
 								</div>
 							</div>
 							<!-- photo -->
@@ -149,13 +147,13 @@
 												<tbody>
 													<tr>
 														<td class="text-center">
-															{{$vendeur->nom}}
+															{{$vendeur->vendeur->nom}}
 															
 														</td>
-														<td class="text-center">{{$vendeur->postnom}}</td>
-														<td class="text-center">{{$vendeur->prenom}}</td>
-														<td class="text-center">{{$vendeur->sexe}}</td>
-														<td class="text-center">{{$vendeur->telephone}}</td>
+														<td class="text-center">{{$vendeur->vendeur->postnom}}</td>
+														<td class="text-center">{{$vendeur->vendeur->prenom}}</td>
+														<td class="text-center">{{$vendeur->vendeur->sexe}}</td>
+														<td class="text-center">{{$vendeur->vendeur->telephone}}</td>
 													</tr>
 												</tbody>
 											</table>

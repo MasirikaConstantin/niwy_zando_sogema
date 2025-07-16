@@ -18,10 +18,11 @@ class VendeurResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'nom' => $this->nom,
-            'postnom' => $this->postnom,
-            'prenom' => $this->prenom,
+            //'nom' => $this->nom,
+            //'postnom' => $this->postnom,
+            //'prenom' => $this->prenom,
             'sexe' => $this->sexe,
+            'nomComplet' => $this->nomComplet(),
             'lieu_naissance' => $this->lieu_naissance,
             'date_naissance' => $this->date_naissance,
             'residence' => $this->residence,

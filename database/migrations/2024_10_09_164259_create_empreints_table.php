@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('empreints', function (Blueprint $table) {
             $table->id();
-            $table->text('doigt_droite1')->nullable(); 
+            $table->longText('doigt_droite1')->nullable(); 
             $table->text('doigt_droite2')->nullable(); 
             $table->text('doigt_droite3')->nullable(); 
             $table->text('doigt_droite4')->nullable(); 

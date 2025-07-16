@@ -2,20 +2,19 @@
 <tr style="cursor: pointer;">
     <td>{{$loop->index+1}}</td>
     <td>
-        {{ $item->nomComplet()}}
+        {{ $item->vendeur->nomComplet()}}
         <br />
     </td>
-    <td class="text-center">@if(!empty($item->telephone)){{ $item->telephone}}@endif</td>
+    <td class="text-center">@if(!empty($item->vendeur->telephone)){{ $item->vendeur->telephone}}@endif</td>
     <td class="text-center">
         {{ date('d-m-Y', strtotime($item->datecreation)) }}
     </td>
-    {{--  
+    
     <td class="text-center">
         @if($item->etat == "valider")
             <span class="p-1 colorText bg-primary" style="border-radius: 5px; font-weight: bold;"> Validé </span>
         @else
             @if($item->etat == "pre-enregistrement")
-                {{-- background-color: #dc8211; -- }}
                 <span class="p-1 colorText bg-danger" style="border-radius: 5px; font-weight: bold;"> Pré-enregistrement </span>
             @endif
 
@@ -30,7 +29,7 @@
             @endif
         @endif
     </td>
-    --}}
+    
 
     <td class="text-center">
         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
@@ -40,7 +39,7 @@
                 </button>
                 <div class="dropdown-menu">
                     <a href="{{route('vend.fichePDF', $item->id)}}" class="dropdown-item dropdownActive">Voir la demande</a>
-                    <a href="{{route('vend.show', $item->id)}}" class="dropdown-item dropdownActive">Voir le Vendeur</a>
+                    <a href="{{route('vend.show', $item->vendeur->id)}}" class="dropdown-item dropdownActive">Voir le Vendeur</a>
                     {{-- <a href="#" class="dropdown-item dropdownActive">Voir demande validé</a> --}}
                     {{-- <a href="#" class="dropdown-item dropdownActive">Voir demande payé</a> --}}
                     {{-- <a class="dropdown-item dropdownActive" href="{{route('vend.fichePDF', $item->id)}}">Voir le dossier</a> --}}

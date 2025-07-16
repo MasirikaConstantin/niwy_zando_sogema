@@ -23,11 +23,13 @@ use Infobip\Model\SmsDestination;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Treatement;
+use App\Http\Resources\DossierResource;
 use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Support\Facades\Auth;
 use Infobip\Model\SmsTextualMessage;
 use App\Http\Resources\VendeurResource;
+use App\Models\Dossier;
 use Illuminate\Support\Facades\Validator;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Infobip\Model\SmsAdvancedTextualRequest;
@@ -369,10 +371,10 @@ class VendeurController extends Controller
         return view('pages.vendeurs.pdfFiche', compact('vendeur','qrcodeifos'));
     }
 
-    public function detailsInfosVendeurPourValidation($idVendeur)
+    public function detailsInfosVendeurPourValidation($idDossier)
     {
         //$vendeur = Vendeur::with('places','articles')->find($idVendeur);
-        $vendeur = Vendeur::with('vendeurDemande','vendeurDemande.emplacement','vendeurDemande.pavillon')->find($idVendeur);
+        $vendeur = Dossier::with('vendeurDemande','vendeurDemande.emplacement','vendeurDemande.pavillon')->find($idDossier);
         if($vendeur == null){
             toastr()->error("Impossible de traiter cette requête", "Vendeur");
             return back();
@@ -387,9 +389,10 @@ class VendeurController extends Controller
         return view('pages.vendeurs.formulaireValidation', compact('vendeur','articles','places','placeNumber','pavillons', 'emplacements'));
     }
 
-    public function detailsInfosVendeurPourValidationStore(Request $request, $idVendeur){
+    public function detailsInfosVendeurPourValidationStore(Request $request, $idDossier){
         try {
-            $vendeur = Vendeur::find($idVendeur);
+            $vendeur = Dossier::find($idDossier);
+            dd($vendeur);
             if($vendeur == null){
                 toastr()->error("Impossible de traiter cette requête", "Vendeur");
                 return back();
@@ -408,18 +411,18 @@ class VendeurController extends Controller
         
     }
 
-    public function vendeurTraiter($idVendeur){
+    public function vendeurTraiter($idDossier){
         try {
 
-            $vendeur = Vendeur::find($idVendeur);
-            if($vendeur == null){
+            $dossier = Dossier::find($idDossier);
+            if($dossier == null){
                 toastr()->error("Impossible de traiter cette requête", "Vendeur");
                 return back();
             }
-            $vendeur->etat = "traiter";
-            $vendeur->date_traitement = date('Y-m-d H:i:s');
-            $vendeur->userTraiter_id = Auth::user()->id;     
-            $vendeur->save();
+            $dossier->etat = "traiter";
+            $dossier->date_traitement = date('Y-m-d H:i:s');
+            $dossier->userTraiter_id = Auth::user()->id;     
+            $dossier->save();
             toastr()->success('Enregistrement effectué avec success!');
             return redirect()->route("vend.listVendeurParEtat","attente"); //back(); //->with('success', "Enregistrement effectué avec success!");
         } catch (\Exception $e) {
@@ -431,19 +434,19 @@ class VendeurController extends Controller
         }
     }
 
-    public function detailsVendeurValidationDG($idVendeur){
+    public function detailsVendeurValidationDG($idDossier){
         if(Auth::user()->role->name == "Super Admin" || Auth::user()->role->name == "DG"){
-            $vendeur = Vendeur::with('vendeurDemande','vendeurDemande.emplacement','vendeurDemande.pavillon')->find($idVendeur);
+            $vendeur = Dossier::with('vendeurDemande','vendeurDemande.emplacement','vendeurDemande.pavillon')->find($idDossier);
             if($vendeur == null){
                 toastr()->error("Impossible de traiter cette requête", "Vendeur");
                 return back();
             } 
 
-            $totalSum = VendeurDemande::where('vendeur_id', $idVendeur)->where('decision','1')->whereNotNull(['article_id','pavillon_id','place_id','emplacement_id'])->sum('total');
+            $totalSum = VendeurDemande::where('dossier_id', $idDossier)->where('decision','1')->whereNotNull(['article_id','pavillon_id','place_id','emplacement_id'])->sum('total');
             
-            $totalRemiseSum = VendeurDemande::where('vendeur_id', $idVendeur)->where('decision','1')->where('remise', '>', '0')->whereNotNull(['article_id','pavillon_id','place_id','emplacement_id'])->get(); //sum('total');
+            $totalRemiseSum = VendeurDemande::where('dossier_id', $idDossier)->where('decision','1')->where('remise', '>', '0')->whereNotNull(['article_id','pavillon_id','place_id','emplacement_id'])->get(); //sum('total');
             
-            $totalNoSum = VendeurDemande::where('vendeur_id', $idVendeur)->where('decision','1')->where('remise', '0')->whereNotNull(['article_id','pavillon_id','place_id','emplacement_id'])->sum('total');
+            $totalNoSum = VendeurDemande::where('dossier_id', $idDossier)->where('decision','1')->where('remise', '0')->whereNotNull(['article_id','pavillon_id','place_id','emplacement_id'])->sum('total');
             
             $totalRemiseSommes = 0; // = [];
             foreach($totalRemiseSum as $rm){
@@ -454,10 +457,10 @@ class VendeurController extends Controller
 
             $totalApayerRemise = $totalRemiseSommes + $totalNoSum;
             
-            $code_unique =  $vendeur->code_unique ?? 0000;
-            $name = $vendeur->nom;
-            $postName = $vendeur->postnom;
-            $firstName = $vendeur->prenom;
+            $code_unique =  $vendeur->vendeur->code_unique ?? 0000;
+            $name = $vendeur->vendeur->nom;
+            $postName = $vendeur->vendeur->postnom;
+            $firstName = $vendeur->vendeur->prenom;
             $url = 'https://example.com';
             $imagePath = public_path('assets/img/logoSogema.png');
             $dataQrcode = "Nom: $name\nPost-nom: $postName\nPrenom: $firstName\nCode_unique: $code_unique\nURL: $url\nMyUrl: $imagePath";
@@ -473,18 +476,26 @@ class VendeurController extends Controller
     }
 
     public function listVendeurParEtat(Request $request, $etat)
-    {
-        // attente traiter valider payer
+{
+    try {
         if($request->ajax()) {
-            $vendeurs = VendeurResource::collection(Vendeur::where('etat', $etat)->orderBy('id', 'DESC')->get());
-            // return view('pages.vendeurs.listeDonnees', compact('vendeurs'));            
+            \Log::info("Etat reçu: " . $etat); // Log pour débogage
+            
+            $dossiers = Dossier::where('etat', $etat)->orderBy('id', 'DESC')->get();
+            \Log::info("Nombre de dossiers trouvés: " . $dossiers->count()); // Log pour débogage
+            
+            $vendeurs = DossierResource::collection($dossiers);
             return view('pages.vendeurs.listeAllDonnees', compact('vendeurs'));            
         }
 
-        $vendeurCounts = Vendeur::where('etat', $etat)->count();
-        
+        $vendeurCounts = Dossier::where('etat', $etat)->count();
         return view('pages.vendeurs.listeVendeurEtat', compact('etat','vendeurCounts'));
+        
+    } catch (\Exception $e) {
+        \Log::error("Erreur dans listVendeurParEtat: " . $e->getMessage());
+        return response()->json(['error' => 'Une erreur est survenue'], 500);
     }
+}
 
     public function searchVendeurForm(){
         return view('pages.vendeurs.searchVendeurBanque');
@@ -597,9 +608,9 @@ class VendeurController extends Controller
         }
     }
 
-    public function terminerDg($idVendeur){
+    public function terminerDg($idDossier){
         try {
-            $vd = Vendeur::find($idVendeur);
+            $vd = Dossier::find($idDossier);
             //return substr($vd->telephone, -9); //$vd->telephone;
             if($vd == null){
                 toastr()->error("Impossible de traiter cette requête", "Vendeur");
@@ -620,10 +631,10 @@ class VendeurController extends Controller
 
             $message = new SmsTextualMessage(
                 destinations: [
-                    new SmsDestination(to: "243".substr($vd->telephone, -9)) //.substr($vd->telephone, -9) ."820939428"
+                    new SmsDestination(to: "243".substr($vd->vendeur->telephone, -9)) //.substr($vd->telephone, -9) ."820939428"
                 ],
                 from: 'SOGEMA CONFIRMATION DE VALIDATION DOSSIER',
-                text: "Bonjour Mr/Mme $vd->nom $vd->prenom\nNous vous confirmons que votre dossier vient d'être validé par le Directeur Général de SOGEMA.\nVous disposez de 30 jours, à compter d'aujourd'hui, pour effectuer le paiement à la banque avec le code secret\n $vd->code_unique\n Passé ce délai, votre demande sera annulée."
+                text: "Bonjour Mr/Mme $vd->vendeur->nom $vd->vendeur->prenom \nNous vous confirmons que votre dossier vient d'être validé par le Directeur Général de SOGEMA.\nVous disposez de 30 jours, à compter d'aujourd'hui, pour effectuer le paiement à la banque avec le code secret\n $vd->vendeur->code_unique\n Passé ce délai, votre demande sera annulée."
             );
 
             $request = new SmsAdvancedTextualRequest(messages: [$message]);
