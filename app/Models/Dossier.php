@@ -54,6 +54,11 @@ class Dossier extends Model
         return $this->belongsTo(User::class, 'agent_id');
     }
 
+    public function userValidation()
+    {
+        return $this->belongsTo(User::class, 'userTraiter_id');
+    }
+
     public function typePavilon()
     {
         return $this->belongsTo(TypePavilon::class, 'type_pavilon_id');

@@ -42,7 +42,7 @@ class VendeurController extends Controller
         //return Vendeur::with('agent','userValidation','places','articles')->orderBy('id', 'ASC')->get();
        // return VendeurResource::collection(Vendeur::with('agent','userValidation')->orderBy('id', 'ASC')->get());
         if($request->ajax()) {
-            $vendeurs = VendeurResource::collection(Vendeur::with('agent','userValidation')->orderBy('id', 'DESC')->get());
+            $vendeurs = DossierResource::collection(Dossier::with('agent','userValidation')->orderBy('id', 'DESC')->get());
             return view('pages.vendeurs.listeAllDonnees', compact('vendeurs'));            
             //return response()->json(['statut'=>"dataExiste", 'myData'=> $vendeurs], 200);
         }

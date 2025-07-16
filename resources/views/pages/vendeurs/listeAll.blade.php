@@ -28,7 +28,7 @@
         <div class="card">
             <div style="display: flex; align-items: center; justify-items: center; justify-content: space-between; flex-wrap: wrap;">
                 <div>
-                    <h4 class="card-title pl-4 pt-3">Liste vendeurs <span class="fw-bold bg_background colorText pl-3 pr-3 pt-1 pb-1" style="border-radius: 6px;">{{$vendeurCounts}}</span></h4>
+                    <h4 class="card-title pl-4 pt-3">Liste des Dossiers <span class="fw-bold bg_background colorText pl-3 pr-3 pt-1 pb-1" style="border-radius: 6px;">{{$vendeurCounts}}</span></h4>
                 </div>
                 <form id="formSend" action="#" method="POST">
                     @csrf
