@@ -27,7 +27,7 @@ return new class extends Migration
             
             $table->string('decision', 2)->nullable();
             $table->dateTime('date_decision')->nullable();
-            $table->string('decision_banque', 2)->nullable();
+            $table->tinyInteger('decision_banque')->default('0');
             $table->dateTime('date_decision_banque')->nullable();
             $table->string('nom_agent_banque', 255)->nullable();
             $table->integer('userValidateur')->default(0);

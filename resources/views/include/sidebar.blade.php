@@ -8,15 +8,15 @@
 						<i class="fas fa-home mr-3 colorText"></i>
 						<p class="colorText">Tableau de bord</p>
 						<!-- <span class="badge badge-success">4</span> -->
-					</a>
+					</a>	
 				</li>
 
 				@if(Auth::user()->role->name == "Super Admin" || Auth::user()->role->name == "Admin" || Auth::user()->role->name == "AgentTerrain" || Auth::user()->role->name == "DG")
 
 				<li class="nav-item {{request()->segment(1) == 'vendeur' ? 'submenu active': ''}}">
 					<a data-toggle="collapse" href="#dashboard" class="collapsedM" aria-expanded="false">
-						<i class="fas fa-store mr-3 colorText"></i>
-						<p class="colorText">Vendeurs</p>
+						<i class="fas fa-solid fa-folder-open mr-3 colorText"></i>
+						<p class="colorText">Dossiers</p>
 						<span class="caret colorText"></span>
 					</a>
 					<div class="collapse {{request()->segment(1) == 'vendeur' ? 'show': ''}}" id="dashboard">
@@ -32,7 +32,7 @@
 
 							<li>
 								<a href="{{route('dossier.index')}}">
-									<span class="sub-item colorText {{request()->segment(1) == 'dossier' ? 'border pl-2 pr-2': ''}}">Dossier</span>
+									<span class="sub-item colorText {{request()->segment(2) == 'dossier' ? 'border pl-2 pr-2': ''}}">Dossier </span>
 								</a>
 							</li>
 							@if(Auth::user()->role->name == "Super Admin" || Auth::user()->role->name == "Admin")
@@ -74,6 +74,12 @@
 							@endif
 						</ul>
 					</div>
+				</li>
+				<li class="nav-item {{request()->segment(1) == 'vendeurs' ? 'submenu active': ''}}">
+					<a href="{{route('vendeurs.index')}}">
+						<i class="fas fa-store mr-3 colorText"></i>
+						<p class="colorText">Vendeurs</p>
+					</a>
 				</li>
 				@endif
 

@@ -109,127 +109,82 @@
 									</div>
 								</div>
 
-                                <div class="invoice-detail">
-									<div class="invoice-top">
-										<h3 class="title"><strong>Activite</strong></h3>
-									</div>
-									@if($vendeur->etat != "attente" && $vendeur->decision_dg == 1)
-									<div class="invoice-item">
-										<div class="table-responsive">										
-											<form id="formSend" action="{{route('vend.saveDecisionBanque')}}" method="POST">
-												@csrf
-												<table class="table table-striped">
-													<thead>
-														<tr>
-															<td><strong>Article</strong></td>
-															<td class="text-center"><strong>Place</strong></td>
-															<td class="text-center"><strong>Pavillon</strong></td>
-															{{-- <td class="text-right"><strong>Numéro place</strong></td> --}}
-															{{-- <td class="text-center"><strong>Valider</strong></td> --}}
-														</tr>
-													</thead>
-													<tbody>
-														@forelse ($vendeur->vendeurDemande as $dm)
-															@if($dm->decision == '1')
-															<tr>
-																<td class="">
-																	<span>
-																		{{$dm->article->nom}}
-																	</span>
-																	<div class="text-primary">
-																		
-																		{{-- <h4 style="font-weight: bold; font-size: 15px;">({{$dm->prix}}$ <span>*</span> <span>{{$dm->mois}} Mois </span>) * {{$dm->quatite}} Place = {{$dm->prix * $dm->mois}}<span>$</span></h4> --}}
-																		
-																		@if($dm->remise > 0)
-																			<h4 style="font-weight: bold; font-size: 15px;">
-																				@php
-																					$remise = $dm->total * $dm->remise / 100;
-																					$totalApayer = $dm->total - $remise;
-																				@endphp 
-																				<strong class="text-primary" style="font-size: 15px;">Montant à payer <span id="printRemise{{$loop->index}}">{{number_format($totalApayer)}}</span><span>$</span></strong>
-																			</h4>
-																		@endif
-																		@if($dm->remise == 0)
-																			<h4 style="font-weight: bold; font-size: 15px;">
-																				@php
-																					$remise = $dm->prix * $dm->mois;
-																					$totalApayer = $dm->total // $remise;
-																				@endphp 
-																				<strong class="text-primary" style="font-size: 15px;">Montant à payer <span id="printRemise{{$loop->index}}">{{number_format($totalApayer)}}</span><span>$</span></strong>
-																			</h4>
-																		@endif
-																		<strong class="text-warning" style="font-size: 15px;" id="printRemiseJs{{$loop->index}}"> </strong>
-																	</div>
-																	<input type="hidden" name="idVendeurDemande[]" id="idVendeurDemande{{$loop->index}}" value="{{$dm->id}}" />
-																	<input type="hidden" name="prix{{$loop->index}}" id="prix{{$loop->index}}" value="{{$dm->prix}}" />
-																	<input type="hidden" name="mois{{$loop->index}}" id="mois{{$loop->index}}" value="{{$dm->mois}}" />
-																	<input type="hidden" name="total{{$loop->index}}" id="total{{$loop->index}}" value="{{$dm->total}}" />
-																	<input type="hidden" name="quantite{{$loop->index}}" id="quantite{{$loop->index}}" value="{{$dm->quatite}}" />
-
-																</td>
-																<td class="text-center">
-																	{{$dm->place->nom}} @if(!empty($dm->place->type_place_id)) {{$dm->place->typePlace->nom}} {{$dm->place->typePlace->dimension}}  @endif 
-																</td>
-																<td class="text-center">@if(!empty($dm->pavillon_id)){{$dm->pavillon->numero}} / Niveau {{$dm->pavillon->niveau}} @endif</td>
-																{{-- <td class="text-center">@if(!empty($dm->emplacement_id)){{$dm->emplacement->numero}} / {{$dm->emplacement->place->orientation}} @endif</td> {{$dm->remise}} --}}
-																
-																{{-- <td class="text-center">
-																	<div style="display: flex; flex-direction: row; align-items: center; justify-content: center">
-																		<input type="number" name="remise{{$loop->index}}" id="remise{{$loop->index}}" class="form-control" min="0" max="99" value="{{$dm->remise}}" onchange="SaveRemise('{{$loop->index}}');" onkeyup="SaveRemise('{{$loop->index}}');" style="width: 80px !important; height: 40px !important;" placeholder="%" />
-																		<button id="btnSend{{$loop->index}}" class="btn bg_background text-white" style="height: 40px;" {{$dm->decision_banque == '1'? 'disabled' : ''}} onclick="saveDecisionBanque('{{$loop->index}}');">
-																			{{$dm->decision_banque == '1'? "Déjà payé" : "Valider"}}                                                                        
-																		</button>
-																		<div class="text-center border" id="validerLoaderImg{{$loop->index}}" style="display: none;">
-																			<img src="{{asset('assets/img/loading.gif')}}" alt="Chargement en cours..." style="height: 30px;" />
-																		</div>
-																	</div>
-																</td> --}}
-															</tr>
-															@endif                                                        
-														@empty
-															<tr>
-																<td colspan="4" class="text-center text-danger fw-bold">Pas de données</td>															
-															</tr>
-														@endforelse
-
-														<tr>
-															<td colspan="1"></td>
-															<td class="text-center">
-																<h4 style="text-transform: uppercase;">TOTAL Général</h4>
-															</td>
-															<td class="text-center">
-																<h4 id="myTotalG" style="font-weight: bold;">
-																	{{number_format($totalApayerRemise)}} <span>$</span>
-																</h4>
-																<div class="text-center border" id="totalGLoaderImg" style="display: none;">
-																	<img src="{{asset('assets/img/loading.gif')}}" alt="Chargement en cours..." style="height: 40px;" />
-																</div>																
-															</td>
-														</tr>
-														<tr>
-															<td colspan="2"></td>
-															<td>
-																<button id="btnSend" type="submit" class="btn bg_background text-white" style="height: 40px;" {{$dm->decision_banque == '1'? 'disabled' : ''}}>
-																	{{$dm->decision_banque == '1'? "Déjà payé" : "Valider"}}                                                                        
-																</button>
-															</td>
-														</tr>
-													</tbody>
-												</table>
-											</form>
-										</div>
-									</div>
-									@else
-									<div class="row">
-										<div class="col-sm-12">
-											<h4 class="text-center" style="font-weight: bold;">Dossier non Traité</h4>
-										</div>
-									</div>
-									@endif
-								</div>	
+                                	
                             </div>
                         </div>
                     </div>
+					<div id="tabOffPrint" class="col-md-12">
+						<div class="card card-invoice">
+							<div class="card-body">
+								<div class="d-flex justify-content-between align-items-center flex-wrap">
+									<h4 class="card-title pl-4 pt-3">Liste des dossiers pour ce vendeur 
+										<span class="fw-bold bg_background colorText pl-3 pr-3 pt-1 pb-1" style="border-radius: 6px;">
+											{{$dossiers->count()}}
+										</span>
+									</h4>
+									
+								</div>
+								
+								<div class="table-responsive mt-3">
+									<table id="dossiersTable" class="table table-striped table-bordered nowrap">
+										<thead class="thead-dark">
+											<tr>
+												<th>N°</th>
+												<th>Numéro Dossier</th>
+												<th class="text-center">État</th>
+												<th class="text-center">Date Création</th>
+												<th class="text-center">Actions</th>
+											</tr>
+										</thead>
+										<tbody id="myTabs">
+											@forelse($dossiers as $index => $dossier)
+											<tr>
+												<td>{{$index + 1}}</td>
+												<td>Dossier #{{$dossier->numdossier }}</td>
+												<td class="text-center">{{$dossier->etat}}</td>
+												<td class="text-center">{{$dossier->datecreation ? ($dossier->datecreation)->format('d/m/Y') : 'N/A'}}</td>
+												<td class="text-center">
+													<input type="hidden" id="currentUserId" value="{{ auth()->id() }}">
+													<button data-toggle="modal" data-target="#dossierModal" onclick="loadDossierModal({{ $dossier->id }}, document.getElementById('currentUserId').value)" class="btn btn-primary btn-sm" title="Voir détails">
+														<i class="fas fa-eye"></i>
+													</button>
+													@if($dossier->etat === 'attente')
+													<a href="/dossiers/{{$dossier->id}}/edit" class="btn btn-info btn-sm" title="Modifier">
+														<i class="fas fa-edit"></i>
+														</a>
+													@endif
+												</td>
+											</tr>
+											@empty
+												<tr>
+													<td colspan="6" class="text-center text-danger fw-bold">Pas de données</td>
+												</tr>
+											@endforelse
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade " id="dossierModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Détails du Dossier</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalContent">
+                <!-- Contenu chargé dynamiquement -->
+                <div class="text-center p-4">
+                    <i class="fas fa-spinner fa-spin fa-2x"></i>
+                    <p>Chargement en cours...</p>
                 </div>
             </div>
         </div>
@@ -241,106 +196,88 @@
     <script src="{{asset('assets/js/axios.min.js')}}"></script>
 	<script src="{{asset('assets/js/plugin/sweetalert/sweetalert.min.js')}}"></script>
     <script>
-        function saveDecisionBanque(idLigne){
-            let btnSend = document.getElementById('btnSend'+idLigne);
-                btnSend.innerHTML = "En cours...";
-                btnSend.setAttribute("disabled", true);
+        
 
-            let validerLoaderImg = document.getElementById('validerLoaderImg'+idLigne);
-                validerLoaderImg.style.display = 'block';
-
-            let idVendeurDemande = document.getElementById('idVendeurDemande'+idLigne).value;
-            console.log(idVendeurDemande);
-
-            let nom_agent = "{{Auth::user()->fullname()}}";// ?? "Inconnu"; //"Mwenabatu kenge blaise";
-            console.log(nom_agent)
-
-            axios.post("{{route('vend.saveDecisionBanque')}}", {
-				idVendeurDemande,
-				nom_agent
-
-			}, {
-				headers: { 'Content-Type': 'multipart/form-data' }
-			})
-			.then(function(response) {
-				const reponse = response.data; //myData
-				// document.getElementById('btnSend').innerHTML = "Enregistrer";
-				// document.getElementById('btnSend').removeAttribute("disabled"); 
-				// document.getElementById('myTotalG').innerHTML = reponse.myData.toLocaleString('en-US') + '$';
-				// remiseLoaderImg.style.display = 'none';
-				// totalGLoaderImg.style.display = 'none';
-				// myTotalG.style.display = 'block';
-                if(reponse.statut == "errorValidate"){
-                    console.log(reponse) 
-                    alert(reponse.errorsValidateMessage);                    
-                }
-
-                if(reponse.statut == "saveOk")
-                {
-                    console.log(reponse)
-                    btnSend.innerHTML = "Déjà Payé";
-                }
-                validerLoaderImg.style.display = 'none';                
-			}).catch(function(error) {
-				alert(error);
-				console.log(error);
-			});	
-        }
-
-		document.getElementById('formSend').addEventListener('submit', function(e) {
-			e.preventDefault();
-			document.getElementById('btnSend').innerHTML = " En cours...";
-			document.getElementById('btnSend').setAttribute("disabled", true);
+		// Fonction pour charger le modal
+	async function loadDossierModal(dossierId, userId) {
+		const modal = $('#dossierModal');
+		const content = $('#modalContent');
 		
-			const myForm = document.getElementById('formSend');
+		content.html('<div class="text-center p-5"><i class="fas fa-spinner fa-spin fa-3x"></i></div>');
+		modal.modal('show');
 
-			const formDatas = new FormData(myForm);
-			axios.post("{{route('vend.saveDecisionBanque')}}", formDatas, {
-				headers: {
-					'Content-Type': 'multipart/form-data'
-				}
-			})
-			.then(function(response) {
-				const reponse = response.data;
-				document.getElementById('btnSend').innerHTML = "Enregistrer";
-				document.getElementById('btnSend').removeAttribute("disabled");  
-				if(reponse.statut == "saveSuccess"){
-					Swal.fire({
-						title: "Enregistrement",
-						text: reponse.message,
-						icon: 'success',
-						confirmButtonText: `Ok &nbsp;<i class="fa fa-arrow-right"></i>`,
-					})
-					.then((result) => {
-						if (result.isConfirmed) {
-							//reponse.myData
-							window.location.href = "{{route('searchVendeurForm')}}"; //reponse.myUrl;
-						}
-					});
-				}
-				if(reponse.statut == "errorValidate"){
-					// Si la validation échoue, afficher les erreurs
-					let errors = reponse.errorsValidateMessage;
-					let errorMessage = '';
+		try {
+			const response = await axios.get(`/api/dossiers/${dossierId}?user_id=${userId}`);
 
-					// Concaténer les messages d'erreur
-					for (let field in errors) {
-						errorMessage += errors[field].join(' ') + '<br />';
+			content.html(response.data);
+			// Initialisez les événements après chargement
+			initModalEvents(userId);
+		} catch (error) {
+			content.html(`<div class="alert alert-danger">Erreur de chargement: ${error.message}</div>`);
+		}
+	}
+
+	// Gestion du formulaire dans le modal
+	function initModalEvents(userId) {
+		document.getElementById('formSend')?.addEventListener('submit', async function(e) {
+			e.preventDefault();
+			const formData = new FormData(this);
+			formData.append('user_id', userId); // Ajoute l'ID utilisateur
+
+			try {
+				const response = await axios.post("{{ route('vend.saveDecisionBanque') }}", formData, {
+					headers: {
+						'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+						'Content-Type': 'multipart/form-data'
 					}
-					console.log(reponse.errorsValidateMessage);
-					//alert(reponse.errorsValidateMessage)
-					// Afficher les erreurs dans SweetAlert
-					Swal.fire({
-						icon: 'error',
-						title: 'Erreur de validation',
-						html: errorMessage,
-					});
+				});
+
+				if (response.data.success) {
+					Swal.fire('Succès!', response.data.message, 'success');
+					$('#dossierModal').modal('hide');
 				}
-				console.log(reponse)         
-			}).catch(function(error) {
-				alert(error);
-				console.log(error);
-			});
+			} catch (error) {
+				Swal.fire('Erreur!', error.response?.data?.message || 'Erreur inconnue', 'error');
+			}
 		});
+	}
+		
+
+		// Fonction pour charger les données QR code (si nécessaire)
+		function loadQrCodeData(vendeurId) {
+			return axios.get(`/api/vendeurs/${vendeurId}/qrcode`);
+		}
+		// À placer dans votre fichier JavaScript principal
+document.addEventListener('DOMContentLoaded', function() {
+    document.body.addEventListener('submit', async function(e) {
+        if (e.target.id === 'formSend') {
+            e.preventDefault();
+            const form = e.target;
+            const btn = form.querySelector('button[type="submit"]');
+            
+            btn.innerHTML = "En cours...";
+            btn.disabled = true;
+            try {
+                const response = await axios.post(form.action, new FormData(form), {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                });
+                if (response.data.success) {
+					alert("Enregistrement effectué avec succés");
+
+                    window.location.href = "{{ route('searchVendeurForm') }}";
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Erreur lors de l'envoi du formulaire");
+            } finally {
+                btn.innerHTML = "Valider";
+                btn.disabled = false;
+            }
+        }
+    });
+});
     </script>
 @endsection

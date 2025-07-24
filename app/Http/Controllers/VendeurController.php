@@ -532,8 +532,10 @@ class VendeurController extends Controller
         $qrcodeifos = QrCode::size(100)->merge($imagePath,0.3, true)->generate($dataQrcode);
 
         $totalApayerRemise = $this->totalApayer($vendeur->id);
+        $dossiers = Dossier::where('vendeur_id', $vendeur->id)->Where('etat', 'valider')->where('decision_banque','!=', '1')->orderBy('id', 'DESC')->get();
+        
         //return view('pages.vendeurs.searchVendeurBanque', compact('vendeur'));
-        return view('pages.vendeurs.formulaireValidationBanque', compact('vendeur','totalApayerRemise','qrcodeifos'));
+        return view('pages.vendeurs.formulaireValidationBanque', compact('vendeur','totalApayerRemise','qrcodeifos','dossiers'));
     }
 
     public function totalApayer($idVendeur){
@@ -620,6 +622,7 @@ class VendeurController extends Controller
 
             $vd->decision_dg = 1;
             $vd->etat = "valider";
+            $vd->date_validation_dg = date('Y-m-d H:i:s');
             $vd->save();
 
             $configuration = new Configuration(
@@ -657,6 +660,7 @@ class VendeurController extends Controller
             'idVendeurDemande' => 'required',
             //'nom_agent' => 'required',
         ]);
+        return response()->json($request->all());
 
         if ($validator->fails()) {
             return response()->json(['statut'=> 'errorValidate', 'errorsValidateMessage' => $validator->errors()]);

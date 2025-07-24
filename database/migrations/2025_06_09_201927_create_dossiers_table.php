@@ -27,7 +27,8 @@ return new class extends Migration
             //$table->string('nom_chef_pavillon')->nullable();
             $table->string('nbr_table', 20)->nullable();
             $table->string('statut', 50)->nullable();
-            $table->string('agentBanque')->default('0');
+            $table->tinyInteger('agentBanque')->default('0');
+            $table->string('decision_banque', 2)->default('0');
             $table->timestamps();
         });
     }

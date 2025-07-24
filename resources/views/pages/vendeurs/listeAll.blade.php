@@ -1,5 +1,5 @@
 @extends('layout.main')
-@section('title', 'Liste des vendeurs')
+@section('title', 'Liste des Dossiers')
 @section('styles')
 <style>
     .btn {

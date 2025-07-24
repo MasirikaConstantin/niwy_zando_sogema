@@ -166,7 +166,7 @@
               </button>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="submitForm()">Enregistrer</button>
+                <button type="button" class="btn btn-primary" onclick="submitForm()">Créer</button>
               </div>
             </div>
       

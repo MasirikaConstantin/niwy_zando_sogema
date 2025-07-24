@@ -15,6 +15,7 @@ use App\Http\Controllers\EmplacementController;
 use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\VendeurDemandeController;
 use App\Http\Controllers\VendeurNouveauDossier;
+use App\Http\Controllers\VendeursControllers;
 
 /*
 |--------------------------------------------------------------------------
@@ -130,7 +131,6 @@ Route::group(['middleware' => ['auth','checkStatutUserActivate']], function(){
         Route::post('/save_remise', [VendeurController::class,'saveRemise'])->name('vend.saveRemise');
         Route::get('/terminer_dg/{idVendeur}', [VendeurController::class,'terminerDg'])->name('vend.terminerDg');
         
-        Route::post('/save_decision_banque', [VendeurController::class,'saveDecisionBanque'])->name('vend.saveDecisionBanque');
         
         Route::get('/contrat/{idVendeur}', [VendeurController::class,'vendeurContrat'])->name('vend.vendeurContrat');
         Route::get('/contrat_imprimer', [VendeurController::class,'contratImprimer'])->name('vend.contratImprimer');
@@ -230,5 +230,5 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::post('/store_nouveau_dossier_ajax', [VendeurNouveauDossier::class,'storeAjax'])->name('vend.storeNouveauDossierAjax');
-
+Route::get('/vendeurs', [VendeursControllers::class, 'index'])->name('vendeurs.index');
 require __DIR__.'/auth.php';

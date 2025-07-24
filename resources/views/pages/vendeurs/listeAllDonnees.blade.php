@@ -2,7 +2,7 @@
 <tr style="cursor: pointer;">
     <td>{{$loop->index+1}}</td>
     <td>
-        {{ $item->vendeur->nomComplet()}}
+        {{ $item->vendeur->nom.' '.$item->vendeur->postnom.' '.$item->vendeur->prenom }}
         <br />
     </td>
     <td class="text-center">@if(!empty($item->vendeur->telephone)){{ $item->vendeur->telephone}}@endif</td>
